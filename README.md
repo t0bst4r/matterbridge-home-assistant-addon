@@ -19,7 +19,7 @@ docker run -d \
   -e HOME_ASSISTANT_ACCESS_TOKEN="ey....dq"
   -e HOME_ASSISTANT_CLIENT_CONFIG="{}"
   --name matterbridge
-  ghcr.io/t0bst4r/matterbridge-home-assistant-addon:0.0.4
+  ghcr.io/t0bst4r/matterbridge-home-assistant-addon:latest
 ```
 
 ## Configuration
@@ -28,4 +28,3 @@ This image needs to be configured using the following environment variables:
 - **HOME_ASSISTANT_URL**: the url of your home assistant installation (e.g. `http://192.168.178.23:8123`)
 - **HOME_ASSISTANT_ACCESS_TOKEN**: a long-lived access token created for home assistant
 - **HOME_ASSISTANT_CLIENT_CONFIG**: JSON-string of the include/exclude configuration (see [the documentation](https://github.com/t0bst4r/matterbridge-home-assistant?tab=readme-ov-file#configuration))
-

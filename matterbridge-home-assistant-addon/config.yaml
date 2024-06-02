@@ -1,8 +1,8 @@
 name: Matterbridge-Home-Assistant
 description: Populate your Home Assistant instance as Matter Bridge
 slug: matterbridge_home_assistant
-version: 0.0.4
-image: ghcr.io/matterbridge-home-assistant:0.0.4
+version: 0.0.5
+image: ghcr.io/matterbridge-home-assistant:0.0.5
 options:
   home_assistant_url: ""
   home_assistant_access_token: ""
