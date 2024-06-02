@@ -4,12 +4,8 @@ slug: matterbridge
 version: 0.0.5
 # image: ghcr.io/t0bst4r/matterbridge-home-assistant-addon:0.0.5
 options:
-  home_assistant_url: ""
-  home_assistant_access_token: ""
   home_assistant_client_config: "{}"
 schema:
-  home_assistant_url: str
-  home_assistant_access_token: str
   home_assistant_client_config: str
 homeassistant_api: true
 host_network: true
