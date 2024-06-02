@@ -1,0 +1,17 @@
+FROM node:20-alpine
+
+ENV MATTERBRIDGE_VERSION "1.2.19"
+ENV MATTERBRIDGE_HOME_ASSISTANT_VERSION "0.0.4"
+
+ENV HOME_ASSISTANT_URL=""
+ENV HOME_ASSISTANT_ACCESS_TOKEN=""
+ENV HOME_ASSISTANT_CLIENT_CONFIG="{}"
+
+EXPOSE 8283
+EXPOSE 8284
+
+RUN npm install -g matterbridge@${MATTERBRIDGE_VERSION}
+RUN npm install -g matterbridge-home-assistant@${MATTERBRIDGE_HOME_ASSISTANT_VERSION}
+RUN matterbridge -add matterbridge-home-assistant
+
+CMD matterbridge -bridge

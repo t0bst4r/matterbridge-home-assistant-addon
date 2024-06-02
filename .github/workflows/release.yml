@@ -1,0 +1,56 @@
+name: release
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    outputs:
+      release_version: ${{ steps.get_version.outputs.VERSION }}
+    env:
+      CI: "true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set git identity
+        run: |-
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Get Version
+        id: get_version
+        run: echo "VERSION=$(cat matterbridge-home-assistant-addon/config.yaml | grep version | cut -c 10-100)" >> $GITHUB_OUTPUT
+
+      - name: Build
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          push: true
+          platforms: linux/amd64,linux/arm/v7
+          tags: ghcr.io/${{ github.repository }}:${{ steps.get_version.outputs.VERSION }}
+
+  release_github:
+    name: Publish to GitHub Releases
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF: ${{ github.sha }}
+        run: errout=$(mktemp); gh release create "${{needs.release.outputs.release_version}}" -R $GITHUB_REPOSITORY -t "${{needs.release.outputs.release_version}}" --target $GITHUB_REF 2> $errout && true; exitcode=$?; if [ $exitcode -ne 0 ] && ! grep -q "Release.tag_name already exists" $errout; then cat $errout; exit $exitcode; fi
