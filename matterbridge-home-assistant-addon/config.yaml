@@ -12,7 +12,7 @@ schema:
   home_assistant_access_token: str
   home_assistant_client_config: str
 host_network: true
-webui: http://[HOST]:[PORT:8283]/dashboard
+webui: http://[HOST]:[PORT:8283]/
 init: false
 arch:
   - amd64

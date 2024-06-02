@@ -10,7 +10,7 @@ ENV HOME_ASSISTANT_CLIENT_CONFIG="{}"
 ENV MATTERBRIDGE_VERSION "1.2.19"
 ENV MATTERBRIDGE_HOME_ASSISTANT_VERSION "0.0.4"
 
-RUN npm install --no-audit -g \
+RUN npm install -g \
     matterbridge@${MATTERBRIDGE_VERSION} \
     matterbridge-home-assistant@${MATTERBRIDGE_HOME_ASSISTANT_VERSION}
 
