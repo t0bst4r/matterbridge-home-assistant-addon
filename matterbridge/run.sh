@@ -8,6 +8,7 @@ export HOME_ASSISTANT_URL
 export HOME_ASSISTANT_ACCESS_TOKEN
 export HOME_ASSISTANT_CLIENT_CONFIG
 
+# Add config on first run
 if [ ! -d /root/.matterbridge/storage ]; then
     mkdir -p /root/.matterbridge/storage/.matterbridge
     echo '{"key":"globalModulesDirectory","value":"/usr/local/lib/node_modules"}' > \
