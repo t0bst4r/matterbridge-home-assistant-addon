@@ -10,10 +10,6 @@ export HOME_ASSISTANT_CLIENT_CONFIG
 
 # Add config on first run
 if [ ! -d /root/.matterbridge/storage ]; then
-    mkdir -p /root/.matterbridge/storage/.matterbridge
-    echo '{"key":"globalModulesDirectory","value":"/usr/local/lib/node_modules"}' > \
-        /root/.matterbridge/storage/.matterbridge/d01917a070027b55bce538a96fa2004f061de6fe1644f402a321c6db8c71b9ba
-
     matterbridge -add matterbridge-home-assistant
 fi
 
