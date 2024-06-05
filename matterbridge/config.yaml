@@ -1,19 +1,18 @@
-name: Matterbridge-Home-Assistant
+name: Matterbridge
 description: Populate your Home Assistant instance as Matter Bridge
-slug: matterbridge_home_assistant
+slug: matterbridge
 version: 0.0.5
-image: ghcr.io/matterbridge-home-assistant:0.0.5
+image: ghcr.io/t0bst4r/matterbridge-home-assistant-addon:0.0.5
 options:
-  home_assistant_url: ""
-  home_assistant_access_token: ""
   home_assistant_client_config: "{}"
 schema:
-  home_assistant_url: str
-  home_assistant_access_token: str
   home_assistant_client_config: str
+homeassistant_api: true
 host_network: true
 webui: http://[HOST]:[PORT:8283]/
 init: false
 arch:
   - amd64
   - armv7
+map:
+  - addon_config:rw
