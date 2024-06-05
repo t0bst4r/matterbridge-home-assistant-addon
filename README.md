@@ -5,26 +5,19 @@ This AddOn for home assistant populates all entities of the home assistant insta
 # Installation
 
 ## Home Assistant AddOn
+You can add this repository to your home assistant as a new plugin source.
 
-**THIS IS NOT FINISHED AND NOT YET TESTET.**
-
-## Docker
-
-Simply run
-```bash
-docker run -d \
-  --network host \
-  -v /users/t0bst4r/materbridge:/root \
-  -e HOME_ASSISTANT_URL="http://192.168.178.23:8123"
-  -e HOME_ASSISTANT_ACCESS_TOKEN="ey....dq"
-  -e HOME_ASSISTANT_CLIENT_CONFIG="{}"
-  --name matterbridge
-  ghcr.io/t0bst4r/matterbridge-home-assistant-addon:latest
-```
+Home assistant should find the plugin afterwards and you can install and configure it as you like.
 
 ## Configuration
-This image needs to be configured using the following environment variables:
+This addon needs to be configured using the following configuration option:
 
-- **HOME_ASSISTANT_URL**: the url of your home assistant installation (e.g. `http://192.168.178.23:8123`)
-- **HOME_ASSISTANT_ACCESS_TOKEN**: a long-lived access token created for home assistant
 - **HOME_ASSISTANT_CLIENT_CONFIG**: JSON-string of the include/exclude configuration (see [the documentation](https://github.com/t0bst4r/matterbridge-home-assistant?tab=readme-ov-file#configuration))
+
+# Contributors
+- [t0bst4r](https://github.com/t0bst4r)
+- [genehand](https://github.com/genehand)
+
+---
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/t0bst4r)
