@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "addon-matterbridge-home-assistant",
+  "scripts": {
+    "matterbridge": "matterbridge"
+  },
+  "dependencies": {
+    "matterbridge-home-assistant": "0.0.6",
+    "matterbridge": "1.2.22",
+    "@project-chip/matter-node.js": "0.9.1",
+    "@project-chip/matter.js": "0.9.1"
+  }
+}

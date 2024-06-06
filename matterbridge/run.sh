@@ -10,7 +10,7 @@ export HOME_ASSISTANT_CLIENT_CONFIG
 
 # Add config on first run
 if [ ! -d /root/.matterbridge/storage ]; then
-    matterbridge -add matterbridge-home-assistant
+    npm run matterbridge -- -add matterbridge-home-assistant
 fi
 
-matterbridge -bridge
+npm run matterbridge -- -bridge
