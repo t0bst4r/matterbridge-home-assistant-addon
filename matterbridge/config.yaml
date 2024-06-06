@@ -14,5 +14,6 @@ init: false
 arch:
   - amd64
   - armv7
+  - aarch64
 map:
   - addon_config:rw
