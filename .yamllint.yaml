@@ -1,5 +1,4 @@
 ---
-
 yaml-files:
   - '*.yaml'
   - '*.yml'
