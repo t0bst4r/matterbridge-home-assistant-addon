@@ -1,0 +1,24 @@
+---
+configuration:
+  include_domains:
+    name: Include Domains
+    description: |
+      List of domains to include (e.g. light, switch, media_player).
+      If empty, all domains are included.
+  include_patterns:
+    name: Include Patterns
+    description: |
+      List of glob patterns to include entities (e.g. light.kitchen*).
+      If empty, all entities are included.
+  exclude_domains:
+    name: Exclude Domains
+    description: |
+      List of domains to exclude (e.g. light, switch, media_player).
+      Even included entities need to NOT match this domains.
+      If empty, no domain is excluded.
+  exclude_patterns:
+    name: Exclude Patterns
+    description: |
+      List of glob patterns to exclude entities (e.g. media_player.*echo*).
+      Even included entities need to NOT match this patterns.
+      If empty, no entity is excluded.
