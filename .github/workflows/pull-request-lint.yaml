@@ -14,7 +14,7 @@ on:
 
 jobs:
   validate:
-    name: Validate PR title
+    name: ✏️ Validate PR title
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write

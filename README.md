@@ -1,25 +1,30 @@
 # Matterbridge Home Assistant Addon
 
-This AddOn for home assistant populates all entities of the home assistant instance as a Matter-bridge.
+This Home Assistant Add-On populates entities of the home assistant instance as a Matter-bridge.
 
 # Installation
 
-## Home Assistant AddOn
+Open Home Assistant and navigate to the addon settings.
+![Home Assistant Settings](docs/hass-settings.png)
 
-You can add this repository to your home assistant as a new plugin source.
+Open up the Add-On store and open the "Repositories" menu in the top-right corner.
+![!Home Assistant Add-On Store](docs/hass-addon-store.png)
 
-Home assistant should find the plugin afterward, and you can install and configure it as you like.
+Enter the URL of the GitHub Repo to the list of your add-on repositories (`https://github.com/t0bst4r/matterbridge-home-assistant-addon`).
+![Home Assistant Add Repository](docs/hass-add-repo.png)
 
-## Configuration
+After the repository is added, refresh your Add-On Store page and find the Add-On in your list of Add-Ons.
+![Home Assistant Add-On Store with the new Add-On](docs/hass-addon-store-with-repo.png)
 
-This addon needs to be configured using the following configuration option:
+Open the Add-On page and click "install".
+![Home Assistant Matterbridge Add-On](docs/hass-matterbridge-addon.png)
 
-- **HOME_ASSISTANT_CLIENT_CONFIG**: JSON-string of the include/exclude configuration (see [the documentation](https://github.com/t0bst4r/matterbridge-home-assistant?tab=readme-ov-file#configuration))
+**Before starting the plugin** open the configuration tab and enter your configuration.<br />
+
+![Home Assistant Matterbridge Add-On Configuration](docs/hass-matterbridge-configuration.png)
 
 # Contributors
-
-- [t0bst4r](https://github.com/t0bst4r)
-- [genehand](https://github.com/genehand)
+[![Contributors](https://contrib.rocks/image?repo=t0bst4r/matterbridge-home-assistant-addon)](https://github.com/t0bst4r/matterbridge-home-assistant-addon/graphs/contributors)
 
 ---
 
