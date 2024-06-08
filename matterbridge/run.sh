@@ -8,9 +8,5 @@ export HOME_ASSISTANT_URL
 export HOME_ASSISTANT_ACCESS_TOKEN
 export HOME_ASSISTANT_CLIENT_CONFIG
 
-# Add config on first run
-if [ ! -d /root/.matterbridge/storage ]; then
-    npm run matterbridge -- -add matterbridge-home-assistant
-fi
-
+npm run matterbridge -- -add ./node_modules/matterbridge-home-assistant
 npm run matterbridge -- -bridge
