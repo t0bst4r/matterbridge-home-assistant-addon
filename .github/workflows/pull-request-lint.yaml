@@ -1,5 +1,5 @@
 ---
-name: pull-request-lint
+name: Pull Request Lint
 
 # yamllint disable-line rule:truthy
 on:

@@ -1,0 +1,123 @@
+---
+name: Pull Request Build
+
+# yamllint disable-line rule:truthy
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  information:
+    name: ℹ️ Addon Information
+    runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.information.outputs.name }}
+      description: ${{ steps.information.outputs.description }}
+      target: ${{ steps.information.outputs.target }}
+      build: ${{ steps.information.outputs.build }}
+      architectures: ${{ steps.information.outputs.architectures }}
+      version: pr-${{ github.event.number }}
+    steps:
+      - name: ⤵️ Checkout
+        uses: actions/checkout@v4
+      - name: ℹ️ Gather Information
+        id: information
+        uses: frenck/action-addon-information@v1.4.2
+
+  lint:
+    name: ✏️ Lint
+    runs-on: ubuntu-latest
+    needs: [ information ]
+    steps:
+      - name: ⤵️ Checkout
+        uses: actions/checkout@v4
+      - name: ✏️ Addon Lint
+        uses: frenck/action-addon-linter@v2.15.1
+        with:
+          path: "./${{ needs.information.outputs.target }}"
+      - name: ✏️ Hadolint
+        uses: brpaz/hadolint-action@v1.5.0
+        with:
+          dockerfile: "./${{ needs.information.outputs.target }}/Dockerfile"
+      - name: ✏️ JSON Lint
+        run: |
+          shopt -s globstar
+          cat **/*.json | jq '.'
+      - name: ✏️ Shellcheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        env:
+          SHELLCHECK_OPTS: -s bash
+      - name: ✏️ YAMLLint
+        uses: frenck/action-yamllint@v1.5
+        with:
+          config: .yamllint.yaml
+
+  build:
+    name: 🚀 Build
+    runs-on: ubuntu-latest
+    needs: [ information, lint ]
+    strategy:
+      matrix:
+        architecture: ${{ fromJson(needs.information.outputs.architectures) }}
+    steps:
+      - name: ⤵️ Checkout
+        uses: actions/checkout@v4
+      - name: 🏗 Set up build cache
+        id: cache
+        uses: actions/cache@v4.0.2
+        with:
+          path: /tmp/.docker-cache
+          key: docker-${{ matrix.architecture }}-${{ github.sha }}
+          restore-keys: |
+            docker-${{ matrix.architecture }}
+      - name: 🏗 Set up QEMU
+        uses: docker/setup-qemu-action@v3.0.0
+      - name: 🏗 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.3.0
+      - name: ℹ️ Compose build flags
+        id: flags
+        run: |
+          echo "date=$(date +"%Y-%m-%dT%H:%M:%SZ")" >> "$GITHUB_OUTPUT"
+          from=$(yq --no-colors eval ".build_from.${{ matrix.architecture }}" "${{ needs.information.outputs.build }}")
+          echo "from=${from}" >> "$GITHUB_OUTPUT"
+
+          if [[ "${{ matrix.architecture}}" = "amd64" ]]; then
+            echo "platform=linux/amd64" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ matrix.architecture }}" = "i386" ]]; then
+            echo "platform=linux/386" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ matrix.architecture }}" = "armhf" ]]; then
+            echo "platform=linux/arm/v6" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ matrix.architecture }}" = "armv7" ]]; then
+            echo "platform=linux/arm/v7" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ matrix.architecture }}" = "aarch64" ]]; then
+            echo "platform=linux/arm64/v8" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error ::Could not determine platform for architecture ${{ matrix.architecture }}"
+            exit 1
+          fi
+      - name: ⤵️ Download base image
+        if: steps.flags.outputs.from != 'null'
+        run: docker pull "${{ steps.flags.outputs.from }}"
+      - name: 🚀 Build
+        uses: docker/build-push-action@v5.3.0
+        with:
+          push: false
+          context: ${{ needs.information.outputs.target }}
+          file: ${{ needs.information.outputs.target }}/Dockerfile
+          cache-from: |
+            type=local,src=/tmp/.docker-cache
+            ghcr.io/${{ github.repository }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}
+          cache-to: type=local,mode=max,dest=/tmp/.docker-cache-new
+          platforms: ${{ steps.flags.outputs.platform }}
+          build-args: |
+            BUILD_ARCH=${{ matrix.architecture }}
+            BUILD_DATE=${{ steps.flags.outputs.date }}
+            BUILD_DESCRIPTION=${{ needs.information.outputs.description }}
+            BUILD_FROM=${{ steps.flags.outputs.from }}
+            BUILD_NAME=${{ needs.information.outputs.name }}
+            BUILD_REF=${{ github.sha }}
+            BUILD_REPOSITORY=${{ github.repository }}
+            BUILD_VERSION=${{ needs.information.outputs.version }}
