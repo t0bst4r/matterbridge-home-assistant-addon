@@ -11,7 +11,7 @@ homeassistant: 2024.1.0
 homeassistant_api: true
 host_network: true
 # Architecture & Image Options
-# image: ghcr.io/t0bst4r/matterbridge-home-assistant-addon/{arch}
+image: ghcr.io/t0bst4r/matterbridge-home-assistant-addon/{arch}
 init: false
 arch:
   - aarch64
@@ -22,10 +22,10 @@ map:
   - addon_config:rw
 # Options & Schema
 options:
-  include_domains: []
-  include_patterns: []
-  exclude_domains: []
-  exclude_patterns: []
+  include_domains: [ ]
+  include_patterns: [ ]
+  exclude_domains: [ ]
+  exclude_patterns: [ ]
 schema:
   include_domains:
     - str?
