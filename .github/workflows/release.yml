@@ -26,6 +26,7 @@ jobs:
   information:
     if: ${{ needs.release-please.outputs.release_created }}
     name: ℹ️ Addon Information
+    needs: [ release-please ]
     runs-on: ubuntu-latest
     outputs:
       name: ${{ steps.information.outputs.name }}
@@ -45,7 +46,7 @@ jobs:
   build:
     if: ${{ needs.release-please.outputs.release_created }}
     name: 🚀 Build
-    needs: [ information, release-please ]
+    needs: [ release-please, information ]
     uses: ./.github/workflows/wf-docker-build.yaml
     strategy:
       matrix:
