@@ -11,10 +11,6 @@ on:
       yamllint-config:
         required: false
         type: string
-      is-pr:
-        required: false
-        type: boolean
-        default: false
     secrets:
       token:
         required: true
@@ -75,19 +71,3 @@ jobs:
         uses: frenck/action-yamllint@v1.5
         with:
           config: ${{ inputs.yamllint-config }}
-
-  pr_lint:
-    name: Pull Request Lint
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: read
-    steps:
-      - uses: amannn/action-semantic-pull-request@v5.5.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.token }}
-        with:
-          types: |-
-            feat
-            fix
-            chore
-          requireScope: false
