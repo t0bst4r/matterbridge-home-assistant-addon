@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/t0bst4r/matterbridge-home-assistant-addon/compare/v1.0.2...v1.0.3) (2024-06-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency matterbridge-home-assistant to v0.1.1 ([#14](https://github.com/t0bst4r/matterbridge-home-assistant-addon/issues/14)) ([58610cb](https://github.com/t0bst4r/matterbridge-home-assistant-addon/commit/58610cba972da0b488932a8e7448ebc05c27014f))
+
 ## [1.0.2](https://github.com/t0bst4r/matterbridge-home-assistant-addon/compare/v1.0.1...v1.0.2) (2024-06-09)
 
 
