@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/t0bst4r/matterbridge-home-assistant-addon/compare/v1.0.1...v1.0.2) (2024-06-09)
+
+
+### Bug Fixes
+
+* change renovate to use fix type ([#30](https://github.com/t0bst4r/matterbridge-home-assistant-addon/issues/30)) ([61810a7](https://github.com/t0bst4r/matterbridge-home-assistant-addon/commit/61810a77a904c8d399f82aa9f1d183bab7df6c61))
+
 ## [1.0.1](https://github.com/t0bst4r/matterbridge-home-assistant-addon/compare/v1.0.0...v1.0.1) (2024-06-09)
 
 
