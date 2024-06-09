@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/t0bst4r/matterbridge-home-assistant-addon/compare/v1.0.0...v1.0.1) (2024-06-09)
+
+
+### Bug Fixes
+
+* added docker push permission ([#28](https://github.com/t0bst4r/matterbridge-home-assistant-addon/issues/28)) ([eb2cd44](https://github.com/t0bst4r/matterbridge-home-assistant-addon/commit/eb2cd442a2b03e3fd40bdb10f37338c0715738ad))
+
 ## [1.0.0](https://github.com/t0bst4r/matterbridge-home-assistant-addon/compare/v0.1.0...v1.0.0) (2024-06-09)
 
 
