@@ -1,15 +1,18 @@
 ---
 # General Info
-version: 1.0.0
+version: 1.0.0  # x-release-please-version
 slug: matterbridge
 name: Matterbridge
 description: Populate your Home Assistant instance as Matter Bridge
 url: https://github.com/t0bst4r/matterbridge-home-assistant-addon
+
 # Requirements
 homeassistant: 2024.1.0
+
 # Permissions
 homeassistant_api: true
 host_network: true
+
 # Architecture & Image Options
 image: ghcr.io/t0bst4r/matterbridge-home-assistant-addon/{arch}
 init: false
@@ -20,6 +23,7 @@ arch:
 webui: http://[HOST]:[PORT:8283]/
 map:
   - addon_config:rw
+
 # Options & Schema
 options:
   include_domains: [ ]

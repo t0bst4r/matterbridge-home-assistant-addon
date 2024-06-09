@@ -1,0 +1,98 @@
+---
+name: Docker Build
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    inputs:
+      addon-architecture:
+        required: true
+        type: string
+      addon-path:
+        required: true
+        type: string
+      addon-version:
+        required: true
+        type: string
+      addon-name:
+        required: true
+        type: string
+      addon-description:
+        required: true
+        type: string
+      docker-tags:
+        required: false
+        type: string
+      docker-push:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    name: Docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Checkout
+        uses: actions/checkout@v4
+      - name: 🏗 Set up build cache
+        id: cache
+        uses: actions/cache@v4.0.2
+        with:
+          path: /tmp/.docker-cache
+          key: docker-${{ inputs.addon-architecture }}-${{ github.sha }}
+          restore-keys: |
+            docker-${{ inputs.addon-architecture }}
+      - name: 🏗 Set up QEMU
+        uses: docker/setup-qemu-action@v3.0.0
+      - name: 🏗 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.3.0
+      - name: ℹ️ Compose build flags
+        id: flags
+        run: |
+          echo "date=$(date +"%Y-%m-%dT%H:%M:%SZ")" >> "$GITHUB_OUTPUT"
+          from=$(yq -M eval ".build_from.${{ inputs.addon-architecture }}" "${{ inputs.addon-path }}/build.yaml")
+          echo "from=${from}" >> "$GITHUB_OUTPUT"
+
+          if [[ "${{ inputs.addon-architecture }}" = "amd64" ]]; then
+            echo "platform=linux/amd64" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ inputs.addon-architecture }}" = "i386" ]]; then
+            echo "platform=linux/386" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ inputs.addon-architecture }}" = "armhf" ]]; then
+            echo "platform=linux/arm/v6" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ inputs.addon-architecture }}" = "armv7" ]]; then
+            echo "platform=linux/arm/v7" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ inputs.addon-architecture }}" = "aarch64" ]]; then
+            echo "platform=linux/arm64/v8" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error ::Could not determine platform for architecture ${{ inputs.addon-architecture }}"
+            exit 1
+          fi
+      - name: ⤵️ Download base image
+        if: steps.flags.outputs.from != 'null'
+        run: docker pull "${{ steps.flags.outputs.from }}"
+      - name: 🚀 Build
+        uses: docker/build-push-action@v5.3.0
+        with:
+          push: ${{ inputs.docker-push }}
+          context: ${{ inputs.addon-path }}
+          file: ${{ inputs.addon-path }}/Dockerfile
+          cache-from: |
+            type=local,src=/tmp/.docker-cache
+            ${{ inputs.docker-tags }}
+          tags: ${{ inputs.docker-tags }}
+          cache-to: type=local,mode=max,dest=/tmp/.docker-cache-new
+          platforms: ${{ steps.flags.outputs.platform }}
+          build-args: |
+            BUILD_ARCH=${{ inputs.addon-architecture }}
+            BUILD_DATE=${{ steps.flags.outputs.date }}
+            BUILD_FROM=${{ steps.flags.outputs.from }}
+            BUILD_REF=${{ github.sha }}
+            BUILD_REPOSITORY=${{ github.repository }}
+            BUILD_VERSION=${{ inputs.addon-version }}
+            BUILD_NAME=${{ inputs.addon-name }}
+            BUILD_DESCRIPTION=${{ inputs.addon-description }}
+      - name: 🚚 Swap build cache
+        run: |
+          rm -rf /tmp/.docker-cache
+          mv /tmp/.docker-cache-new /tmp/.docker-cache

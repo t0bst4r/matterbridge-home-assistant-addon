@@ -1,0 +1,93 @@
+---
+name: Lint
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    inputs:
+      addon-path:
+        required: true
+        type: string
+      yamllint-config:
+        required: false
+        type: string
+      is-pr:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      token:
+        required: true
+
+jobs:
+
+  addon_lint:
+    name: Addon Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Checkout
+        uses: actions/checkout@v4
+      - name: Addon Lint
+        uses: frenck/action-addon-linter@v2.15.1
+        with:
+          path: "./${{ inputs.addon-path }}"
+
+  hadolint:
+    name: Hadolint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Checkout
+        uses: actions/checkout@v4
+      - name: Hadolint
+        uses: brpaz/hadolint-action@v1.5.0
+        with:
+          dockerfile: "./${{ inputs.addon-path }}/Dockerfile"
+
+  json_lint:
+    name: JSON Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Checkout
+        uses: actions/checkout@v4
+      - name: JSON Lint
+        run: |
+          shopt -s globstar
+          cat **/*.json | jq '.'
+
+  shellcheck:
+    name: JSON Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Checkout
+        uses: actions/checkout@v4
+      - name: Shellcheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        env:
+          SHELLCHECK_OPTS: -s bash
+
+  yaml_lint:
+    name: JSON Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Checkout
+        uses: actions/checkout@v4
+      - name: YAMLLint
+        uses: frenck/action-yamllint@v1.5
+        with:
+          config: ${{ inputs.yamllint-config }}
+
+  pr_lint:
+    name: Pull Request Lint
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5.5.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}
+        with:
+          types: |-
+            feat
+            fix
+            chore
+          requireScope: false
