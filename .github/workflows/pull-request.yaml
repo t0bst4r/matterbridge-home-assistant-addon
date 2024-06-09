@@ -37,7 +37,6 @@ jobs:
     with:
       addon-path: "${{ needs.information.outputs.target }}"
       yamllint-config: ".yamllint.yaml"
-      is-pr: true
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
 
