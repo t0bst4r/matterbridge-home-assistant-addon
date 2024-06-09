@@ -11,9 +11,6 @@ on:
       yamllint-config:
         required: false
         type: string
-    secrets:
-      token:
-        required: true
 
 jobs:
 
