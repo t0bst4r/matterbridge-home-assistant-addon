@@ -82,7 +82,7 @@ jobs:
         if: steps.flags.outputs.from != 'null'
         run: docker pull "${{ steps.flags.outputs.from }}"
       - name: 🚀 Build
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5.4.0
         with:
           push: ${{ inputs.docker-push }}
           context: ${{ inputs.addon-path }}
