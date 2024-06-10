@@ -13,7 +13,8 @@
           "type": "yaml",
           "path": "matterbridge/config.yaml",
           "jsonpath": "$.version"
-        }
+        },
+        "README.md"
       ]
     }
   }
