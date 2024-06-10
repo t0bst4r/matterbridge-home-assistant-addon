@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.5](https://github.com/t0bst4r/matterbridge-home-assistant-addon/compare/v1.0.4...v1.0.5) (2024-06-10)
+
+
+### Bug Fixes
+
+* bumb matterbridge-home-assistant to 0.2.5 ([300a750](https://github.com/t0bst4r/matterbridge-home-assistant-addon/commit/300a7508b53207de05c54287d7b876e25ebfc31b))
+* **deps:** update dependency matterbridge-home-assistant to v0.3.0 ([#42](https://github.com/t0bst4r/matterbridge-home-assistant-addon/issues/42)) ([6b53ba7](https://github.com/t0bst4r/matterbridge-home-assistant-addon/commit/6b53ba79f1eeeac05a662c6d00856602b3b09623))
+* **deps:** update docker/build-push-action action to v5.4.0 ([#37](https://github.com/t0bst4r/matterbridge-home-assistant-addon/issues/37)) ([151f32b](https://github.com/t0bst4r/matterbridge-home-assistant-addon/commit/151f32b836129b4bc0c620609afb417cb2078a13))
+
 ## [1.0.4](https://github.com/t0bst4r/matterbridge-home-assistant-addon/compare/v1.0.3...v1.0.4) (2024-06-09)
 
 
