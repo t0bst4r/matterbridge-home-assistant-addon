@@ -1,4 +1,4 @@
-version: 1.0.7
+version: 1.0.8
 slug: matterbridge
 name: Matterbridge
 description: Populate your Home Assistant instance as Matter Bridge
