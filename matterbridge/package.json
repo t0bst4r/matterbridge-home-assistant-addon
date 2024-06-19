@@ -5,8 +5,8 @@
     "matterbridge": "matterbridge"
   },
   "dependencies": {
-    "matterbridge-home-assistant": "1.0.0",
-    "matterbridge": "1.2.22",
+    "matterbridge-home-assistant": "1.2.0",
+    "matterbridge": "1.3.0",
     "@project-chip/matter-node.js": "0.9.1",
     "@project-chip/matter.js": "0.9.1"
   }
