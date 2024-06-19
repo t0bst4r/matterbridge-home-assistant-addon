@@ -23,7 +23,7 @@ Open the Add-On page and click "install".
 
 ![Home Assistant Matterbridge Add-On Configuration](docs/hass-matterbridge-configuration.png)
 
-Start the addon and find the commissioning QR code in the Add-On logs.
+Start the addon and find the commissioning QR code in the Add-On logs or web ui.
 This code can be used to connect your Matter clients (like Alexa, Apple Home or Google Home) to the bridge.
 
 ![Matterbridge commissioning code](docs/matterbridge-commissioning.png)
