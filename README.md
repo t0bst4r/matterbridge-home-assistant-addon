@@ -32,7 +32,7 @@ This code can be used to connect your Matter clients (like Alexa, Apple Home or 
 
 [//]: # (x-release-please-start-version)
 
-[![Contributors](https://contrib.rocks/image?repo=t0bst4r/matterbridge-home-assistant-addon&v=1.2.0)](https://github.com/t0bst4r/matterbridge-home-assistant-addon/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=t0bst4r/matterbridge-home-assistant-addon&v=1.2.1)](https://github.com/t0bst4r/matterbridge-home-assistant-addon/graphs/contributors)
 
 [//]: # (x-release-please-end)
 
