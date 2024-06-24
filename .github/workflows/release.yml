@@ -78,12 +78,12 @@ jobs:
         if: needs.information.outputs.dist-tag == 'latest'
         env:
           VERSION: ${{ needs.information.outputs.version }}
+          # yamllint disable rule:line-length
           NOTES: |
-            This Addon bundles version ${{ needs.information.outputs.matterbridge-home-assistant-version }} of
-            `matterbridge-home-assistant`.
+            This Addon bundles version ${{ needs.information.outputs.matterbridge-home-assistant-version }} of `matterbridge-home-assistant`.
 
-            For detailed information about updates, please refer to its
-            [release notes](https://github.com/t0bst4r/matterbridge-home-assistant/releases).
+            For detailed information about updates, please refer to its [release notes](https://github.com/t0bst4r/matterbridge-home-assistant/releases).
+          # yamllint enable rule:line-length
           REF: ${{ steps.changes.outputs.ref }}
           GH_TOKEN: ${{ github.token }}
         run: |
