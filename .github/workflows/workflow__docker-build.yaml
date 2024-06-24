@@ -5,6 +5,9 @@ name: Docker Build
 on:
   workflow_call:
     inputs:
+      git-ref:
+        required: false
+        type: string
       addon-architecture:
         required: true
         type: string
@@ -27,6 +30,9 @@ on:
         required: false
         type: boolean
         default: false
+      matterbridge-home-assistant-version:
+        required: true
+        type: string
     secrets:
       docker-token:
         required: false
@@ -38,6 +44,8 @@ jobs:
     steps:
       - name: ⤵️ Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.git-ref }}
       - name: 🏗 Set up build cache
         id: cache
         uses: actions/cache@v4.0.2
@@ -102,6 +110,7 @@ jobs:
             BUILD_VERSION=${{ inputs.addon-version }}
             BUILD_NAME=${{ inputs.addon-name }}
             BUILD_DESCRIPTION=${{ inputs.addon-description }}
+            MATTERBRIDGE_HOME_ASSISTANT_VERSION=${{ inputs.matterbridge-home-assistant-version }}
       - name: 🚚 Swap build cache
         run: |
           rm -rf /tmp/.docker-cache

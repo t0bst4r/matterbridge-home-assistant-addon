@@ -3,30 +3,14 @@ name: Release
 
 # yamllint disable-line rule:truthy
 on:
-  push:
-    branches:
-      - main
+  repository_dispatch:
+    types: [ release ]
+#   client_payload:
+#     dist-tag: latest | beta | alpha
 
 jobs:
-  release-please:
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      contents: write
-    outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
-    steps:
-      - uses: googleapis/release-please-action@v4
-        id: release
-        with:
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-          config-file: .github/release-please-config.json
-          manifest-file: .github/release-please-manifest.json
-
   information:
-    if: ${{ needs.release-please.outputs.release_created }}
     name: ℹ️ Addon Information
-    needs: [ release-please ]
     runs-on: ubuntu-latest
     outputs:
       name: ${{ steps.information.outputs.name }}
@@ -34,34 +18,82 @@ jobs:
       target: ${{ steps.information.outputs.target }}
       build: ${{ steps.information.outputs.build }}
       architectures: ${{ steps.information.outputs.architectures }}
-      version: ${{ steps.information.outputs.version }}
-      environment: latest
+      dist-tag: ${{ steps.versions.outputs.dist-tag }}
+      version: ${{ steps.versions.outputs.version }}-${{github.run_number}}
+      matterbridge-home-assistant-version: ${{ steps.versions.outputs.version }}
     steps:
       - name: ⤵️ Checkout
         uses: actions/checkout@v4
       - name: ℹ️ Gather Information
         id: information
         uses: frenck/action-addon-information@v1.4.2
+      - name: ℹ️ Detect Versions
+        id: versions
+        run: |
+          DIST_TAG=${{ github.event.client_payload.dist-tag }})
+          VERSION=$(npm view matterbridge-home-assistant@$DIST_TAG version)
+          echo "dist-tag=${DIST_TAG}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+  release:
+    name: 🚀 Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      ref: ${{ steps.changes.outputs.ref }}
+    steps:
+      - name: ⤵️ Checkout
+        uses: actions/checkout@v4
+      - name: ⛭ Setup Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: 🚀 Perform Changes
+        id: changes
+        env:
+          VERSION: ${{ needs.information.outputs.version }}
+        run: |
+          yq -i e \
+            ".version = $VERSION" \
+            ${{ needs.information.outputs.target }}/config.yaml
+          git add .
+          git commit -m "chore: release $VERSION"
+          git push
+          echo "ref=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      - name: 🚀 Create Release
+        env:
+          VERSION: ${{ needs.information.outputs.version }}
+          NOTES: |
+            This Addon bundles version ${{ needs.information.outputs.matterbridge-home-assistant-version }} of
+            `matterbridge-home-assistant`.
+
+            For detailed information about updates, please refer to its
+            [release notes](https://github.com/t0bst4r/matterbridge-home-assistant/releases).
+          REF: ${{ steps.changes.outputs.ref }}
+        run: |
+          gh release create "v$VERSION" --title "v$VERSION" --latest --notes "$NOTES" --target "$REF"
 
   build:
-    if: ${{ needs.release-please.outputs.release_created }}
     name: 🚀 Build
-    needs: [ release-please, information ]
-    uses: ./.github/workflows/wf-docker-build.yaml
+    needs: [ information, release ]
+    uses: ./.github/workflows/workflow__docker-build.yaml
+    permissions:
+      packages: write
     strategy:
       matrix:
         architecture: ${{ fromJson(needs.information.outputs.architectures) }}
-    permissions:
-      packages: write
     with:
+      git-ref: ${{ needs.release.outputs.ref }}
+      docker-push: true
       addon-architecture: ${{ matrix.architecture }}
       addon-path: ${{ needs.information.outputs.target }}
       addon-version: ${{ needs.information.outputs.version }}
       addon-name: ${{ needs.information.outputs.name }}
       addon-description: ${{ needs.information.outputs.description }}
       docker-tags: |
+        ghcr.io/${{ github.repository }}/${{ matrix.architecture }}:${{ needs.information.outputs.dist-tag }}
         ghcr.io/${{ github.repository }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}
-        ghcr.io/${{ github.repository }}/${{ matrix.architecture }}:${{ needs.information.outputs.environment }}
-      docker-push: true
+      matterbridge-home-assistant-version: ${{ needs.information-outputs.matterbridge-home-assistant-version }}
     secrets:
       docker-token: ${{ secrets.GITHUB_TOKEN }}

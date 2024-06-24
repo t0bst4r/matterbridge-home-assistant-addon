@@ -25,5 +25,5 @@ export HOME_ASSISTANT_URL
 export HOME_ASSISTANT_ACCESS_TOKEN
 export HOME_ASSISTANT_CLIENT_CONFIG
 
-npm run matterbridge -- -add ./node_modules/matterbridge-home-assistant
-npm run matterbridge -- -bridge
+matterbridge -add matterbridge-home-assistant
+matterbridge -bridge -docker
