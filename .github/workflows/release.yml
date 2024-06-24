@@ -30,7 +30,7 @@ jobs:
       - name: ℹ️ Detect Versions
         id: versions
         run: |
-          DIST_TAG=${{ github.event.client_payload.dist-tag }})
+          DIST_TAG=${{ github.event.client_payload.dist-tag }}
           VERSION=$(npm view matterbridge-home-assistant@$DIST_TAG version)
           echo "dist-tag=${DIST_TAG}" >> "$GITHUB_OUTPUT"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
@@ -38,6 +38,7 @@ jobs:
   release:
     name: 🚀 Release
     runs-on: ubuntu-latest
+    needs: [ information ]
     permissions:
       contents: write
     outputs:
@@ -54,13 +55,11 @@ jobs:
         env:
           VERSION: ${{ needs.information.outputs.version }}
         run: |
-          yq -i e \
-            ".version = $VERSION" \
-            ${{ needs.information.outputs.target }}/config.yaml
+          yq -i e ".version = \"$VERSION\"" ${{ needs.information.outputs.target }}/config.yaml
           git add .
           git commit -m "chore: release $VERSION"
           git push
-          echo "ref=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: 🚀 Create Prerelease
         if: needs.information.outputs.dist-tag != 'latest'
         env:
@@ -72,6 +71,7 @@ jobs:
             For detailed information about updates, please refer to its
             [release notes](https://github.com/t0bst4r/matterbridge-home-assistant/releases).
           REF: ${{ steps.changes.outputs.ref }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "v$VERSION" --title "v$VERSION" --latest=false --prerelease --notes "$NOTES" --target "$REF"
       - name: 🚀 Create Release
@@ -85,6 +85,7 @@ jobs:
             For detailed information about updates, please refer to its
             [release notes](https://github.com/t0bst4r/matterbridge-home-assistant/releases).
           REF: ${{ steps.changes.outputs.ref }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "v$VERSION" --title "v$VERSION" --latest --notes "$NOTES" --target "$REF"
 
