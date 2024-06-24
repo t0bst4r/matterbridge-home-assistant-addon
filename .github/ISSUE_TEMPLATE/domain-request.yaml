@@ -1,0 +1,66 @@
+name: Entity Domain
+description: Request a new domain of entities.
+title: "[Feature]: "
+labels: [ "enhancement" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+
+  - type: input
+    id: what-domain
+    attributes:
+      label: Domain
+      description: What kind of domain do you miss?
+    validations:
+      required: true
+
+  - type: textarea
+    id: attributes
+    attributes:
+      label: Attributes
+      description: |
+        Please show us the attributes of at least one entity you already have in home assistant.
+        Open up the developer tools in home assistant and switch to the "states" tab.
+        Search for your entity and copy the entity id, current state, and all its attributes to this place.
+
+        This will be automatically formatted into code, so no need for backticks.
+      render: shell
+
+  - type: textarea
+    id: service-calls
+    attributes:
+      label: Services
+      description: |
+        Please copy and paste all service calls (YAML) you would do in home assistant changing the state of your entity.
+        You could copy them from your automations or from the developer tools.
+
+        This will be automatically formatted into code, so no need for backticks.
+      placeholder: |
+        # Locking a lock
+        service: lock.lock
+        target:
+          entity_id: lock.my_lock
+        data: { }
+
+        # Unlocking a lock
+        service: lock.unlock
+        target:
+          entity_id: lock.my_lock
+        data: { }
+      render: shell
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of this addon are you running?
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-comments
+    attributes:
+      label: Additional comments
+      description: What else do you want to tell us?

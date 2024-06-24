@@ -1,0 +1,26 @@
+name: Feature Domain
+description: Request a new feature.
+title: "[Feature]: "
+labels: [ "enhancement" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+
+        If you are looking to request a new domain, please use the other form for feature requests.
+
+  - type: input
+    id: what-domain
+    attributes:
+      label: Domain
+      description: What kind of domain is missing a feature?
+
+  - type: textarea
+    id: whats-missing
+    attributes:
+      label: What is actually missing?
+      description: |
+        Please include screenshots, entity attributes and service calls from home assistant if necessary.
+    validations:
+      required: true
