@@ -10,7 +10,8 @@ Open Home Assistant and navigate to the addon settings.
 Open up the Add-On store and open the "Repositories" menu in the top-right corner.
 ![!Home Assistant Add-On Store](docs/hass-addon-store.png)
 
-Enter the URL of the GitHub Repo to the list of your add-on repositories (`https://github.com/t0bst4r/matterbridge-home-assistant-addon`).
+Enter the URL of the GitHub Repo to the list of your add-on
+repositories (`https://github.com/t0bst4r/matterbridge-home-assistant-addon`).
 ![Home Assistant Add Repository](docs/hass-add-repo.png)
 
 After the repository is added, refresh your Add-On Store page and find the Add-On in your list of Add-Ons.
@@ -30,11 +31,7 @@ This code can be used to connect your Matter clients (like Alexa, Apple Home or 
 
 # Contributors
 
-[//]: # (x-release-please-start-version)
-
-[![Contributors](https://contrib.rocks/image?repo=t0bst4r/matterbridge-home-assistant-addon&v=1.2.1)](https://github.com/t0bst4r/matterbridge-home-assistant-addon/graphs/contributors)
-
-[//]: # (x-release-please-end)
+[![Contributors](https://contrib.rocks/image?repo=t0bst4r/matterbridge-home-assistant-addon)](https://github.com/t0bst4r/matterbridge-home-assistant-addon/graphs/contributors)
 
 ---
 

@@ -19,18 +19,27 @@ jobs:
       target: ${{ steps.information.outputs.target }}
       build: ${{ steps.information.outputs.build }}
       architectures: ${{ steps.information.outputs.architectures }}
-      version: pr-${{ github.event.number }}
+      dist-tag: ${{ steps.versions.outputs.dist-tag }}
+      version: pr-${{ steps.versions.outputs.version }}-${{github.run_number}}
+      matterbridge-home-assistant-version: ${{ steps.versions.outputs.version }}
     steps:
       - name: ⤵️ Checkout
         uses: actions/checkout@v4
       - name: ℹ️ Gather Information
         id: information
         uses: frenck/action-addon-information@v1.4.2
+      - name: ℹ️ Detect Versions
+        id: versions
+        run: |
+          DIST_TAG=latest
+          VERSION=$(npm view matterbridge-home-assistant@$DIST_TAG version)
+          echo "dist-tag=${DIST_TAG}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
   lint:
     name: ✏️ Lint
     needs: [ information ]
-    uses: ./.github/workflows/wf-lint.yaml
+    uses: ./.github/workflows/workflow__lint.yaml
     permissions:
       pull-requests: read
       contents: read
@@ -41,11 +50,12 @@ jobs:
   build:
     name: 🚀 Build
     needs: [ information, lint ]
-    uses: ./.github/workflows/wf-docker-build.yaml
+    uses: ./.github/workflows/workflow__docker-build.yaml
     strategy:
       matrix:
         architecture: ${{ fromJson(needs.information.outputs.architectures) }}
     with:
+      docker-push: false
       addon-architecture: ${{ matrix.architecture }}
       addon-path: ${{ needs.information.outputs.target }}
       addon-version: ${{ needs.information.outputs.version }}
@@ -53,3 +63,4 @@ jobs:
       addon-description: ${{ needs.information.outputs.description }}
       docker-tags: |
         ghcr.io/${{ github.repository }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}
+      matterbridge-home-assistant-version: ${{ needs.information-outputs.matterbridge-home-assistant-version }}
