@@ -61,7 +61,21 @@ jobs:
           git commit -m "chore: release $VERSION"
           git push
           echo "ref=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      - name: 🚀 Create Prerelease
+        if: needs.information.outputs.dist-tag != 'latest'
+        env:
+          VERSION: ${{ needs.information.outputs.version }}
+          NOTES: |
+            This Addon bundles version ${{ needs.information.outputs.matterbridge-home-assistant-version }} of
+            `matterbridge-home-assistant`.
+
+            For detailed information about updates, please refer to its
+            [release notes](https://github.com/t0bst4r/matterbridge-home-assistant/releases).
+          REF: ${{ steps.changes.outputs.ref }}
+        run: |
+          gh release create "v$VERSION" --title "v$VERSION" --latest=false --prerelease --notes "$NOTES" --target "$REF"
       - name: 🚀 Create Release
+        if: needs.information.outputs.dist-tag == 'latest'
         env:
           VERSION: ${{ needs.information.outputs.version }}
           NOTES: |
