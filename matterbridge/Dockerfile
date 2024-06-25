@@ -13,6 +13,7 @@ RUN mkdir /app
 WORKDIR /app
 
 RUN \
+    npm config set legacy-peer-deps true && \
     ln -s /config /root/.matterbridge && \
     MATTERBRIDGE_VERSION=$(npm view matterbridge-home-assistant@$MATTERBRIDGE_HOME_ASSISTANT_VERSION devDependencies.matterbridge) && \
     npm install -g matterbridge@$MATTERBRIDGE_VERSION && \
