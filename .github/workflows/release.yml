@@ -6,7 +6,7 @@ on:
   repository_dispatch:
     types: [ release ]
 #   client_payload:
-#     dist-tag: latest | beta | alpha
+#     latest-version: 1.2.3
 
 jobs:
   information:
@@ -30,8 +30,8 @@ jobs:
       - name: ℹ️ Detect Versions
         id: versions
         run: |
-          DIST_TAG=${{ github.event.client_payload.dist-tag }}
-          VERSION=$(npm view matterbridge-home-assistant@$DIST_TAG version)
+          DIST_TAG=latest
+          VERSION=${{ github.event.client_payload.latest-version }}
           echo "dist-tag=${DIST_TAG}" >> "$GITHUB_OUTPUT"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
@@ -60,20 +60,6 @@ jobs:
           git commit -m "chore: release $VERSION"
           git push
           echo "ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      - name: 🚀 Create Prerelease
-        if: needs.information.outputs.dist-tag != 'latest'
-        env:
-          VERSION: ${{ needs.information.outputs.version }}
-          NOTES: |
-            This Addon bundles version ${{ needs.information.outputs.matterbridge-home-assistant-version }} of
-            `matterbridge-home-assistant`.
-
-            For detailed information about updates, please refer to its
-            [release notes](https://github.com/t0bst4r/matterbridge-home-assistant/releases).
-          REF: ${{ steps.changes.outputs.ref }}
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release create "v$VERSION" --title "v$VERSION" --latest=false --prerelease --notes "$NOTES" --target "$REF"
       - name: 🚀 Create Release
         if: needs.information.outputs.dist-tag == 'latest'
         env:
@@ -109,6 +95,6 @@ jobs:
       docker-tags: |
         ghcr.io/${{ github.repository }}/${{ matrix.architecture }}:${{ needs.information.outputs.dist-tag }}
         ghcr.io/${{ github.repository }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}
-      matterbridge-home-assistant-version: ${{ needs.information-outputs.matterbridge-home-assistant-version }}
+      matterbridge-home-assistant-version: ${{ needs.information.outputs.matterbridge-home-assistant-version }}
     secrets:
       docker-token: ${{ secrets.GITHUB_TOKEN }}
