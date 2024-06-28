@@ -2,6 +2,9 @@
 
 This Home Assistant Add-On populates entities of the home assistant instance as a Matter-bridge.
 
+# Supported Entity Domains
+See the main project for a [list of supported entities](https://github.com/t0bst4r/matterbridge-home-assistant?tab=readme-ov-file#supported-entities).
+
 # Installation
 
 Open Home Assistant and navigate to the addon settings.
