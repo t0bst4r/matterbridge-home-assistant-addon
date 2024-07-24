@@ -1,14 +1,12 @@
 #!/usr/bin/with-contenv bashio
 
-HOME_ASSISTANT_URL=http://supervisor/core
-HOME_ASSISTANT_ACCESS_TOKEN=$SUPERVISOR_TOKEN
-
 CONFIG_INCLUDE_DOMAINS=$(bashio::config 'include_domains' | jq --raw-input --compact-output --slurp 'split("\n")')
 CONFIG_INCLUDE_PATTERNS=$(bashio::config 'include_patterns' | jq --raw-input --compact-output --slurp 'split("\n")')
 CONFIG_EXCLUDE_DOMAINS=$(bashio::config 'exclude_domains' | jq --raw-input --compact-output --slurp 'split("\n")')
 CONFIG_EXCLUDE_PATTERNS=$(bashio::config 'exclude_patterns' | jq --raw-input --compact-output --slurp 'split("\n")')
+LOG_LEVEL=$(bashio::config 'log_level')
 
-HOME_ASSISTANT_CLIENT_CONFIG=$(jq --null-input --compact-output \
+MATCHER=$(jq --null-input --compact-output \
   --argjson includeDomains "$CONFIG_INCLUDE_DOMAINS" \
   --argjson includePatterns "$CONFIG_INCLUDE_PATTERNS" \
   --argjson excludeDomains "$CONFIG_EXCLUDE_DOMAINS" \
@@ -16,14 +14,24 @@ HOME_ASSISTANT_CLIENT_CONFIG=$(jq --null-input --compact-output \
   '{ "includeDomains": $includeDomains, "includePatterns": $includePatterns, "excludeDomains": $excludeDomains, "excludePatterns": $excludePatterns }'
 )
 
+HOME_ASSISTANT_CONFIG=$(jq --null-input --compact-output \
+  --argjson matcher "$MATCHER" \
+  --arg accessToken "$SUPERVISOR_TOKEN" \
+  '{ "url": "http://supervisor/core", "accessToken": $accessToken, "matcher": $matcher }'
+)
+
+MHA_CONFIG=$(jq --null-input --compact-output \
+  --argjson homeAssistant "$HOME_ASSISTANT_CONFIG" \
+  '{ "homeAssistant": $homeAssistant }'
+)
+
 echo "#############################"
-echo "CURRENT CLIENT CONFIGURATION:"
-echo "$HOME_ASSISTANT_CLIENT_CONFIG" | jq
+echo "CURRENT CONFIGURATION:"
+echo "$MHA_CONFIG" | jq
 echo "#############################"
 
-export HOME_ASSISTANT_URL
-export HOME_ASSISTANT_ACCESS_TOKEN
-export HOME_ASSISTANT_CLIENT_CONFIG
+export LOG_LEVEL
+export MHA_CONFIG
 
 # Workaround to fix https://github.com/t0bst4r/matterbridge-home-assistant/issues/115
 if grep -q /app/node_modules/matterbridge-home-assistant ~/.matterbridge/storage/.matterbridge/*; then
@@ -31,4 +39,10 @@ if grep -q /app/node_modules/matterbridge-home-assistant ~/.matterbridge/storage
 fi
 
 matterbridge -add matterbridge-home-assistant
-matterbridge -bridge -docker
+
+MATTERBRIDGE_OPTIONS=("-bridge" "-docker")
+if [ "$LOG_LEVEL" = "debug" ]; then
+  MATTERBRIDGE_OPTIONS+=("-debug")
+fi
+
+matterbridge "${MATTERBRIDGE_OPTIONS[@]}"

@@ -20,7 +20,9 @@ options:
   include_patterns: []
   exclude_domains: []
   exclude_patterns: []
+  log_level: "info"
 schema:
+  log_level: str
   include_domains:
     - str?
   include_patterns:

@@ -1,5 +1,9 @@
 ---
 configuration:
+  log_level:
+    name: Log Level
+    description: |
+      The log level used for this addon. One of: debug, info, warn, error
   include_domains:
     name: Include Domains
     description: |
