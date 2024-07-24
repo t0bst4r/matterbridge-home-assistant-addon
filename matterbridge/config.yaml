@@ -18,8 +18,12 @@ map:
 options:
   include_domains: []
   include_patterns: []
+  include_labels: []
+  include_platforms: []
   exclude_domains: []
   exclude_patterns: []
+  exclude_labels: []
+  exclude_platforms: []
   log_level: "info"
 schema:
   log_level: str
@@ -27,7 +31,15 @@ schema:
     - str?
   include_patterns:
     - str?
+  include_labels:
+    - str?
+  include_platforms:
+    - str?
   exclude_domains:
     - str?
   exclude_patterns:
+    - str?
+  exclude_labels:
+    - str?
+  exclude_platforms:
     - str?

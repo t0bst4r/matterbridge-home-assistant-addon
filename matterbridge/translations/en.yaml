@@ -14,6 +14,14 @@ configuration:
     description: |
       List of glob patterns to include entities (e.g. light.kitchen*).
       If empty, all entities are included.
+  include_labels:
+    name: Include Labels
+    description: |
+      List of labels to include. It is important to use the label slug (e.g. "my_devices" instead of "My Devices").
+  include_platforms:
+    name: Include Platforms / Integrations
+    description: |
+      List of Platforms / Integrations to include. It is important to use the slug (e.g. "hue").
   exclude_domains:
     name: Exclude Domains
     description: |
@@ -26,3 +34,11 @@ configuration:
       List of glob patterns to exclude entities (e.g. media_player.*echo*).
       Even included entities need to NOT match this patterns.
       If empty, no entity is excluded.
+  exclude_labels:
+    name: Exclude Labels
+    description: |
+      List of labels to Exclude. It is important to use the label slug (e.g. "my_devices" instead of "My Devices").
+  exclude_platforms:
+    name: Exclude Platforms / Integrations
+    description: |
+      List of Platforms / Integrations to exclude. It is important to use the slug (e.g. "hue").

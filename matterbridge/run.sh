@@ -1,17 +1,28 @@
 #!/usr/bin/with-contenv bashio
 
 CONFIG_INCLUDE_DOMAINS=$(bashio::config 'include_domains' | jq --raw-input --compact-output --slurp 'split("\n")')
-CONFIG_INCLUDE_PATTERNS=$(bashio::config 'include_patterns' | jq --raw-input --compact-output --slurp 'split("\n")')
 CONFIG_EXCLUDE_DOMAINS=$(bashio::config 'exclude_domains' | jq --raw-input --compact-output --slurp 'split("\n")')
+
+CONFIG_INCLUDE_PATTERNS=$(bashio::config 'include_patterns' | jq --raw-input --compact-output --slurp 'split("\n")')
 CONFIG_EXCLUDE_PATTERNS=$(bashio::config 'exclude_patterns' | jq --raw-input --compact-output --slurp 'split("\n")')
+
+CONFIG_INCLUDE_LABELS=$(bashio::config 'include_labels' | jq --raw-input --compact-output --slurp 'split("\n")')
+CONFIG_EXCLUDE_LABELS=$(bashio::config 'exclude_labels' | jq --raw-input --compact-output --slurp 'split("\n")')
+
+CONFIG_INCLUDE_PLATFORMS=$(bashio::config 'include_platforms' | jq --raw-input --compact-output --slurp 'split("\n")')
+CONFIG_EXCLUDE_PLATFORMS=$(bashio::config 'exclude_platforms' | jq --raw-input --compact-output --slurp 'split("\n")')
 LOG_LEVEL=$(bashio::config 'log_level')
 
 MATCHER=$(jq --null-input --compact-output \
   --argjson includeDomains "$CONFIG_INCLUDE_DOMAINS" \
-  --argjson includePatterns "$CONFIG_INCLUDE_PATTERNS" \
   --argjson excludeDomains "$CONFIG_EXCLUDE_DOMAINS" \
+  --argjson includePatterns "$CONFIG_INCLUDE_PATTERNS" \
   --argjson excludePatterns "$CONFIG_EXCLUDE_PATTERNS" \
-  '{ "includeDomains": $includeDomains, "includePatterns": $includePatterns, "excludeDomains": $excludeDomains, "excludePatterns": $excludePatterns }'
+  --argjson includeLabels "$CONFIG_INCLUDE_LABELS" \
+  --argjson excludeLabels "$CONFIG_EXCLUDE_LABELS" \
+  --argjson includePlatforms "$CONFIG_INCLUDE_PLATFORMS" \
+  --argjson excludePlatforms "$CONFIG_EXCLUDE_PLATFORMS" \
+  '{ "includeDomains": $includeDomains, "excludeDomains": $excludeDomains, "includePatterns": $includePatterns, "excludePatterns": $excludePatterns, "includeLabels": $includeLabels, "excludeLabels": $excludeLabels, "includePlatforms": $includePlatforms, "excludePlatforms": $excludePlatforms }'
 )
 
 HOME_ASSISTANT_CONFIG=$(jq --null-input --compact-output \
