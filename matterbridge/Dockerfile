@@ -14,9 +14,8 @@ WORKDIR /app
 
 RUN \
     ln -s /config /root/.matterbridge && \
-    MATTERBRIDGE_VERSION=$(npm view matterbridge-home-assistant@$MATTERBRIDGE_HOME_ASSISTANT_VERSION devDependencies.matterbridge) && \
-    npm install -g matterbridge@$MATTERBRIDGE_VERSION && \
-    npm install -g matterbridge-home-assistant@$MATTERBRIDGE_HOME_ASSISTANT_VERSION
+    MATTERBRIDGE_VERSION=$(npm view matterbridge-home-assistant@$MATTERBRIDGE_HOME_ASSISTANT_VERSION peerDependencies.matterbridge) && \
+    npm install -g matterbridge@$MATTERBRIDGE_VERSION matterbridge-home-assistant@$MATTERBRIDGE_HOME_ASSISTANT_VERSION
 
 COPY run.sh run.sh
 RUN chmod a+x run.sh

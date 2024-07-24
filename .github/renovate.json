@@ -1,8 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    "group:all"
   ],
+  "automerge": true,
+  "schedule": ["every weekend"],
   "customManagers": [
     {
       "customType": "regex",

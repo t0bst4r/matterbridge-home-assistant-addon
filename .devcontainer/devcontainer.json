@@ -7,7 +7,7 @@
     "8283:8283",
     "8284:8284"
   ],
-  "postStartCommand": "bash devcontainer_bootstrap",
+  "postStartCommand": "(bash devcontainer_bootstrap) && supervisor_run",
   "runArgs": [
     "-e",
     "GIT_EDITOR=code --wait",
