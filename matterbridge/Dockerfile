@@ -12,8 +12,6 @@ EXPOSE 8284
 RUN mkdir /app
 WORKDIR /app
 
-ENV npm_config_legacy_peer_deps="true"
-
 RUN \
     ln -s /config /root/.matterbridge && \
     MATTERBRIDGE_VERSION=$(npm view matterbridge-home-assistant@$MATTERBRIDGE_HOME_ASSISTANT_VERSION devDependencies.matterbridge) && \
