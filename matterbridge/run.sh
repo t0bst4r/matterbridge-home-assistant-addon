@@ -11,7 +11,6 @@ CONFIG_EXCLUDE_LABELS=$(bashio::config 'exclude_labels' | jq --raw-input --compa
 
 CONFIG_INCLUDE_PLATFORMS=$(bashio::config 'include_platforms' | jq --raw-input --compact-output --slurp 'split("\n")')
 CONFIG_EXCLUDE_PLATFORMS=$(bashio::config 'exclude_platforms' | jq --raw-input --compact-output --slurp 'split("\n")')
-LOG_LEVEL=$(bashio::config 'log_level')
 
 MATCHER=$(jq --null-input --compact-output \
   --argjson includeDomains "$CONFIG_INCLUDE_DOMAINS" \
@@ -52,8 +51,5 @@ fi
 matterbridge -add matterbridge-home-assistant
 
 MATTERBRIDGE_OPTIONS=("-bridge" "-docker")
-if [ "$LOG_LEVEL" = "debug" ]; then
-  MATTERBRIDGE_OPTIONS+=("-debug")
-fi
 
 matterbridge "${MATTERBRIDGE_OPTIONS[@]}"
