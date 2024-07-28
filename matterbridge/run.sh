@@ -35,6 +35,9 @@ MHA_CONFIG=$(jq --null-input --compact-output \
   '{ "homeAssistant": $homeAssistant }'
 )
 
+FRONTEND_PORT=$(bashio::config 'frontend_port')
+MATTER_PORT=$(bashio::config 'matter_port')
+
 echo "#############################"
 echo "CURRENT CONFIGURATION:"
 echo "$MHA_CONFIG" | jq
@@ -50,6 +53,6 @@ fi
 
 matterbridge -add matterbridge-home-assistant
 
-MATTERBRIDGE_OPTIONS=("-bridge" "-docker")
+MATTERBRIDGE_OPTIONS=("-bridge" "-docker" "-port $MATTER_PORT" "-frontend $FRONTEND_PORT")
 
 matterbridge "${MATTERBRIDGE_OPTIONS[@]}"

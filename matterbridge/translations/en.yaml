@@ -42,3 +42,14 @@ configuration:
     name: Exclude Platforms / Integrations
     description: |
       List of Platforms / Integrations to exclude. It is important to use the slug (e.g. "hue").
+
+  frontend_port:
+    name: Frontend Port
+    description: |
+      The port used for the frontend (default 8283).
+      ONLY CHANGE IT IF YOU KNOW WHAT YOU ARE DOING!
+  matter_port:
+    name: Matter Port
+    description: |
+      The port used to connect Matter controllers (default 5540).
+      ONLY CHANGE IT IF YOU KNOW WHAT YOU ARE DOING!

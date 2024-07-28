@@ -6,8 +6,8 @@ ARG MATTERBRIDGE_HOME_ASSISTANT_VERSION
 
 # webinterface
 EXPOSE 8283
-# websocket for the webinterface
-EXPOSE 8284
+# Matter
+EXPOSE 5540
 
 RUN mkdir /app
 WORKDIR /app

@@ -24,6 +24,8 @@ options:
   exclude_patterns: []
   exclude_labels: []
   exclude_platforms: []
+  frontend_port: 8283
+  matter_port: 5540
 schema:
   include_domains:
     - str?
@@ -41,3 +43,5 @@ schema:
     - str?
   exclude_platforms:
     - str?
+  frontend_port: int
+  matter_port: int
