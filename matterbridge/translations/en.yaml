@@ -53,3 +53,9 @@ configuration:
     description: |
       The port used to connect Matter controllers (default 5540).
       ONLY CHANGE IT IF YOU KNOW WHAT YOU ARE DOING!
+  overrides:
+    name: Domain or Entity specific configurations
+    description: |
+      Some domains can have (optional) special configurations which apply to either the whole domain, or to single entities.
+      See the documentation (https://github.com/t0bst4r/matterbridge-home-assistant/blob/main/packages/matterbridge-home-assistant/README.md#config-structure) for further instructions!
+      ONLY CHANGE IT IF YOU KNOW WHAT YOU ARE DOING!

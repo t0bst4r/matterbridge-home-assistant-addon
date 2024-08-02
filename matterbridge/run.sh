@@ -30,9 +30,12 @@ HOME_ASSISTANT_CONFIG=$(jq --null-input --compact-output \
   '{ "url": "http://supervisor/core", "accessToken": $accessToken, "matcher": $matcher }'
 )
 
+OVERRIDES_CONFIG=$(bashio::config 'overrides')
+
 MHA_CONFIG=$(jq --null-input --compact-output \
   --argjson homeAssistant "$HOME_ASSISTANT_CONFIG" \
-  '{ "homeAssistant": $homeAssistant }'
+  --argjson overrides "$OVERRIDES_CONFIG" \
+  '{ "homeAssistant": $homeAssistant, "overrides": $overrides }'
 )
 
 FRONTEND_PORT=$(bashio::config 'frontend_port')

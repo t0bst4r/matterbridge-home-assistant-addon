@@ -26,6 +26,13 @@ options:
   exclude_platforms: []
   frontend_port: 8283
   matter_port: 5540
+  overrides: |
+    {
+      "domains": {
+      },
+      "entities": {
+      }
+    }
 schema:
   include_domains:
     - str?
@@ -45,3 +52,4 @@ schema:
     - str?
   frontend_port: int
   matter_port: int
+  overrides: str
