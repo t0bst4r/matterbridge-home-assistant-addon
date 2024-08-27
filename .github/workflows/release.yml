@@ -3,10 +3,12 @@ name: Release
 
 # yamllint disable-line rule:truthy
 on:
-  repository_dispatch:
-    types: [ release ]
-#   client_payload:
-#     latest-version: 1.2.3
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: Version to release
+        required: true
 
 jobs:
   information:
@@ -31,7 +33,7 @@ jobs:
         id: versions
         run: |
           DIST_TAG=latest
-          VERSION=${{ github.event.client_payload.latest-version }}
+          VERSION=${{ github.event.inputs.version }}
           echo "dist-tag=${DIST_TAG}" >> "$GITHUB_OUTPUT"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
