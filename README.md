@@ -4,6 +4,41 @@ This Home Assistant Add-On populates entities of the home assistant instance as 
 
 You can find the changelog [here](https://github.com/t0bst4r/matterbridge-home-assistant/releases).
 
+---
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/t0bst4r)
+
+---
+
+## Public Announcement - Feature Freeze
+
+As the development of this project is conducted in my spare time alongside work and family commitments, my availability
+to implement new features or address bugs is limited. Additionally, I must make architectural and strategic decisions
+for this project, which sometimes necessitate significant refactoring efforts.
+
+In light of this, I am officially announcing a "feature freeze" as I prepare for a major update to the application.
+During this period, no new features will be implemented, and only critical bugs — those that render the application
+non-functional — will be addressed until the ongoing refactoring is complete. **This process is expected to take
+approximately 1 to 2 months.**
+
+Key changes included in this update will be as follows:
+
+- The application will no longer be based on `matterbridge`; a new user interface will be developed, replacing the
+  existing one.
+- The application will be renamed from `matterbridge-home-assistant` to `home-assistant-matter-hub` and relocated to a
+  new GitHub repository (which is not yet publicly accessible).
+- Users will need to uninstall their current instance of `matterbridge-home-assistant` and install the new
+  `home-assistant-matter-hub` (which will be made available soon). This transition will also require re-pairing with
+  your Matter controllers.
+
+All updates on this will be posted in the
+corresponding [discussion in GitHub](https://github.com/t0bst4r/matterbridge-home-assistant/discussions/271). Make sure
+to subscribe to this announcement thread.
+
+Thank you for your understanding and continued support.
+
+---
+
 # Supported Entity Domains
 See the main project for a [list of supported entities](https://github.com/t0bst4r/matterbridge-home-assistant?tab=readme-ov-file#supported-entities).
 
