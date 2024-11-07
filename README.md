@@ -1,3 +1,15 @@
+# DEPRECATION WARNING
+
+This addon should not be used anymore!
+It will be replaced with [home-assistant-matter-hub](https://github.com/t0bst4r/home-assistant-matter-hub).
+
+The project is currently in alpha state, but can already be used if you can live with a risk of smaller bugs.
+
+> [!WARNING]
+> DO NOT INSTALL THIS ADDON.
+> NO FURTHER UPDATES WILL BE MADE HERE.
+
+
 # Matterbridge Home Assistant Addon
 
 This Home Assistant Add-On populates entities of the home assistant instance as a Matter-bridge.
